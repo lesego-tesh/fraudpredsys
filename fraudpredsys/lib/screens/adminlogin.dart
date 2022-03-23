@@ -4,9 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-
 class Adminlogin extends StatefulWidget {
-    Adminlogin({Key? key}) : super(key: key);
+  Adminlogin({Key? key}) : super(key: key);
 
   @override
   _AdminloginState createState() => _AdminloginState();
@@ -22,7 +21,7 @@ class _AdminloginState extends State<Adminlogin> {
 
   // firebase
   final _auth = FirebaseAuth.instance;
-  
+
   // string for displaying the error Message
   String? errorMessage;
 
@@ -129,7 +128,7 @@ class _AdminloginState extends State<Adminlogin> {
                     const SizedBox(height: 35),
                     loginButton,
                     const SizedBox(height: 15),
-                                      ],
+                  ],
                 ),
               ),
             ),

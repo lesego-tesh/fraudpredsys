@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:fraudpredsys/main.dart';
 import 'package:fraudpredsys/screens/forgot_password.dart';
 import 'package:fraudpredsys/screens/adminlogin.dart';
 
@@ -7,9 +8,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fraudpredsys/screens/registration_screen.dart';
+import 'package:fraudpredsys/widget/navigation_drawer_widget.dart';
 
 class LoginScreen extends StatefulWidget {
-  const  LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -25,7 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   // firebase
   final _auth = FirebaseAuth.instance;
-  
+
   // string for displaying the error Message
   String? errorMessage;
 
@@ -132,8 +134,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: 35),
                     loginButton,
                     const SizedBox(height: 15),
-                    
-                    
                     Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
@@ -154,15 +154,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                   fontSize: 15),
                             ),
                           )
-                          
                         ]
-                        
+
                         //################################
                         ),
-
-
-                        const SizedBox(height: 15),
-                        Row(
+                    const SizedBox(height: 15),
+                    Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           const Text("Forgot password?"),
@@ -172,9 +169,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                        const ForgotPassword()
-                                      )
-                              );
+                                          const ForgotPassword()));
                             },
                             child: const Text(
                               "Reset",
@@ -184,14 +179,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                   fontSize: 15),
                             ),
                           )
-                          
                         ]
-                        
+
                         //################################
                         ),
-
-                       const SizedBox(height: 15),
-                        Row(
+                    const SizedBox(height: 15),
+                    Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           const Text("Login as Admin "),
@@ -200,8 +193,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                           Adminlogin()));
+                                      builder: (context) => Adminlogin()));
                             },
                             child: const Text(
                               "Signin",
@@ -211,13 +203,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                   fontSize: 15),
                             ),
                           )
-                          
                         ]
-                        
+
                         //################################
                         ),
-
-
                   ],
                 ),
               ),
@@ -237,7 +226,7 @@ class _LoginScreenState extends State<LoginScreen> {
             .then((uid) => {
                   Fluttertoast.showToast(msg: "Login Successful"),
                   Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => const HomeScreen())),
+                      MaterialPageRoute(builder: (context) => MainPage())),
                 });
       } on FirebaseAuthException catch (error) {
         switch (error.code) {

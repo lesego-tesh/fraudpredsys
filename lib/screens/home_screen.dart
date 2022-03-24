@@ -41,8 +41,8 @@ class _HomeScreenState extends State<HomeScreen> {
         _showLogOutDialog();
         break;
       case 'Delete Account':
-      //_showDeleteDialog();
-      //showInSnackBar("You have selected $choice");
+        //_showDeleteDialog();
+        //showInSnackBar("You have selected $choice");
         break;
     }
     setState(() {
@@ -78,9 +78,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
           PopupMenuButton(
             elevation: 3.2,
             initialValue: menuChoices[0],
-            onSelected: (String value){
+            onSelected: (String value) {
               _select(value);
             },
             onCanceled: () {
@@ -124,7 +121,8 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const Text(
                 "Welcome, let's go",
-                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               const SizedBox(
                 height: 10,

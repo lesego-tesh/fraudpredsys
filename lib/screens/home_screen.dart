@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:fraudpredsys/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
+import 'package:fraudpredsys/widget/navigation_drawer_widget.dart';
 import 'login_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -14,24 +14,37 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  String? _userName;
   User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
 
   List<String> menuChoices = ["Sign Out"];
 
   late String _selectedChoice;
+  Future<void> _getUserName() async {
+    FirebaseFirestore.instance
+        .collection('Users')
+        .doc(await user!.uid)
+        .get()
+        .then((value) {
+      setState(() {
+        loggedInUser = UserModel.fromMap(value.data());
+      });
+    });
+  }
 
   @override
   void initState() {
     super.initState();
-    FirebaseFirestore.instance
+    _getUserName();
+    /*FirebaseFirestore.instance
         .collection("users")
         .doc(user!.uid)
         .get()
         .then((value) {
       loggedInUser = UserModel.fromMap(value.data());
       setState(() {});
-    });
+    });*/
   }
 
   void _select(String choice) {
@@ -81,6 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: NavigationDrawerWidget(),
       appBar: AppBar(
         title: const Text("Fraud Pred"),
         centerTitle: true,

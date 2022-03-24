@@ -20,7 +20,7 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
-  static final String title = 'Navigation Drawer';
+  static final String title = 'Fraud bw';
   const MyApp({Key? key}) : super(key: key);
   // This widget is the root of your application.
   @override
@@ -44,7 +44,6 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) => Scaffold(
-        drawer: NavigationDrawerWidget(),
         // endDrawer: NavigationDrawerWidget(),
         appBar: AppBar(
           title: Text(MyApp.title),
@@ -53,14 +52,14 @@ class _MainPageState extends State<MainPage> {
           builder: (context) => Container(
             alignment: Alignment.center,
             padding: const EdgeInsets.symmetric(horizontal: 32),
-            child: ButtonWidget(
+            /* child: ButtonWidget(
               icon: Icons.open_in_new,
               text: 'Open Drawer',
               onClicked: () {
                 Scaffold.of(context).openDrawer();
                 // Scaffold.of(context).openEndDrawer();
               },
-            ),
+            ),*/
           ),
         ),
       );

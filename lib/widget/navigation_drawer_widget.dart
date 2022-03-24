@@ -2,15 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:fraudpredsys/page/favourites_page.dart';
 import 'package:fraudpredsys/page/people_page.dart';
 import 'package:fraudpredsys/page/user_page.dart';
+import 'package:fraudpredsys/model/user_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class NavigationDrawerWidget extends StatelessWidget {
+  User? user = FirebaseAuth.instance.currentUser;
+  UserModel loggedInUser = UserModel();
+
   final padding = EdgeInsets.symmetric(horizontal: 20);
   @override
   Widget build(BuildContext context) {
-    final name = 'Sarah Abs';
-    final email = 'sarah@abs.com';
-    final urlImage =
-        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80';
+    final name = '';
+    final email = '';
 
     return Drawer(
       child: Material(
@@ -18,13 +21,11 @@ class NavigationDrawerWidget extends StatelessWidget {
         child: ListView(
           children: <Widget>[
             buildHeader(
-              urlImage: urlImage,
               name: name,
               email: email,
               onClicked: () => Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => UserPage(
-                  name: 'Sarah Abs',
-                  urlImage: urlImage,
+                  name: ' ',
                 ),
               )),
             ),
@@ -36,25 +37,25 @@ class NavigationDrawerWidget extends StatelessWidget {
                   buildSearchField(),
                   const SizedBox(height: 24),
                   buildMenuItem(
-                    text: 'People',
-                    icon: Icons.people,
+                    text: 'view key performance indicators',
+                    icon: Icons.auto_graph,
                     onClicked: () => selectedItem(context, 0),
                   ),
                   const SizedBox(height: 16),
                   buildMenuItem(
-                    text: 'Favourites',
-                    icon: Icons.favorite_border,
+                    text: 'predict',
+                    icon: Icons.question_mark,
                     onClicked: () => selectedItem(context, 1),
                   ),
                   const SizedBox(height: 16),
                   buildMenuItem(
-                    text: 'Workflow',
-                    icon: Icons.workspaces_outline,
+                    text: 'view file',
+                    icon: Icons.view_agenda,
                     onClicked: () => selectedItem(context, 2),
                   ),
                   const SizedBox(height: 16),
                   buildMenuItem(
-                    text: 'Updates',
+                    text: 'upload file',
                     icon: Icons.update,
                     onClicked: () => selectedItem(context, 3),
                   ),
@@ -62,16 +63,16 @@ class NavigationDrawerWidget extends StatelessWidget {
                   Divider(color: Colors.white70),
                   const SizedBox(height: 24),
                   buildMenuItem(
-                    text: 'Plugins',
-                    icon: Icons.account_tree_outlined,
+                    text: 'Notifications',
+                    icon: Icons.notification_add_outlined,
                     onClicked: () => selectedItem(context, 4),
                   ),
-                  const SizedBox(height: 16),
+                  /* const SizedBox(height: 16),
                   buildMenuItem(
                     text: 'Notifications',
                     icon: Icons.notifications_outlined,
                     onClicked: () => selectedItem(context, 5),
-                  ),
+                  ),*/
                 ],
               ),
             ),
@@ -82,7 +83,6 @@ class NavigationDrawerWidget extends StatelessWidget {
   }
 
   Widget buildHeader({
-    required String urlImage,
     required String name,
     required String email,
     required VoidCallback onClicked,
@@ -93,7 +93,11 @@ class NavigationDrawerWidget extends StatelessWidget {
           padding: padding.add(EdgeInsets.symmetric(vertical: 40)),
           child: Row(
             children: [
-              CircleAvatar(radius: 30, backgroundImage: NetworkImage(urlImage)),
+              Text("${loggedInUser.firstName} ${loggedInUser.secondName}",
+                  style: const TextStyle(
+                    color: Colors.black54,
+                    fontWeight: FontWeight.w500,
+                  )),
               SizedBox(width: 20),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

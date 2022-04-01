@@ -173,7 +173,7 @@ class NavigationDrawerWidget extends StatelessWidget {
           builder: (context) => PeoplePage(),
         ));
         break;
-      case 1:
+      case 2:
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => FavouritesPage(),
         ));

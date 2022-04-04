@@ -4,6 +4,8 @@ import 'package:fraudpredsys/page/people_page.dart';
 import 'package:fraudpredsys/page/user_page.dart';
 import 'package:fraudpredsys/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fraudpredsys/screens/home_screen.dart';
+import 'package:fraudpredsys/screens/predict.dart';
 
 class NavigationDrawerWidget extends StatelessWidget {
   User? user = FirebaseAuth.instance.currentUser;
@@ -37,27 +39,33 @@ class NavigationDrawerWidget extends StatelessWidget {
                   buildSearchField(),
                   const SizedBox(height: 24),
                   buildMenuItem(
+                    text: 'Home',
+                    icon: Icons.home,
+                    onClicked: () => selectedItem(context, 0),
+                  ),
+                  const SizedBox(height: 24),
+                  buildMenuItem(
                     text: 'view key performance indicators',
                     icon: Icons.auto_graph,
-                    onClicked: () => selectedItem(context, 0),
+                    onClicked: () => selectedItem(context, 1),
                   ),
                   const SizedBox(height: 16),
                   buildMenuItem(
                     text: 'predict',
                     icon: Icons.question_mark,
-                    onClicked: () => selectedItem(context, 1),
+                    onClicked: () => selectedItem(context, 2),
                   ),
                   const SizedBox(height: 16),
                   buildMenuItem(
                     text: 'view file',
                     icon: Icons.view_agenda,
-                    onClicked: () => selectedItem(context, 2),
+                    onClicked: () => selectedItem(context, 3),
                   ),
                   const SizedBox(height: 16),
                   buildMenuItem(
                     text: 'upload file',
                     icon: Icons.update,
-                    onClicked: () => selectedItem(context, 3),
+                    onClicked: () => selectedItem(context, 4),
                   ),
                   const SizedBox(height: 24),
                   Divider(color: Colors.white70),
@@ -170,12 +178,32 @@ class NavigationDrawerWidget extends StatelessWidget {
     switch (index) {
       case 0:
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => PeoplePage(),
+          builder: (context) => HomeScreen(),
+        ));
+        break;
+      case 1:
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => const Prediction(),
         ));
         break;
       case 2:
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => FavouritesPage(),
+          builder: (context) => const Prediction(),
+        ));
+        break;
+      case 3:
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => const Prediction(),
+        ));
+        break;
+      case 4:
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => const Prediction(),
+        ));
+        break;
+      case 5:
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => const Prediction(),
         ));
         break;
     }

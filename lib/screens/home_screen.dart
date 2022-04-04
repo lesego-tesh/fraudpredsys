@@ -96,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       drawer: NavigationDrawerWidget(),
       appBar: AppBar(
-        title: const Text("Fraud Pred"),
+        title: const Text("Welcome"),
         centerTitle: true,
         actions: [
           PopupMenuButton(
@@ -129,15 +129,15 @@ class _HomeScreenState extends State<HomeScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              SizedBox(
-                height: 150,
-                child: Image.asset("assets/logo.png", fit: BoxFit.contain),
-              ),
-              const Text(
-                "Welcome, let's go",
-                style:
-                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
+              // SizedBox(
+              //   height: 150,
+              //   child: Image.asset("assets/logo.png", fit: BoxFit.contain),
+              // ),
+              // const Text(
+              //   "Welcome, let's go",
+              //   style:
+              //       const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              // ),
               const SizedBox(
                 height: 10,
               ),

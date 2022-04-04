@@ -148,7 +148,7 @@ class _AdminloginState extends State<Adminlogin> {
             .then((uid) => {
                   Fluttertoast.showToast(msg: "Login Successful"),
                   Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => const HomeScreen())),
+                      MaterialPageRoute(builder: (context) => const Dashboard())),
                 });
       } on FirebaseAuthException catch (error) {
         switch (error.code) {

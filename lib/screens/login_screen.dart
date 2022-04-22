@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:fraudpredsys/main.dart';
 import 'package:fraudpredsys/screens/forgot_password.dart';
 import 'package:fraudpredsys/screens/adminlogin.dart';
-
 import 'package:fraudpredsys/screens/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -225,8 +224,8 @@ class _LoginScreenState extends State<LoginScreen> {
             .signInWithEmailAndPassword(email: email, password: password)
             .then((uid) => {
                   Fluttertoast.showToast(msg: "Login Successful"),
-                  Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => HomeScreen())),
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (context) => const HomeScreen())),
                 });
       } on FirebaseAuthException catch (error) {
         switch (error.code) {

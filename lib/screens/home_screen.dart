@@ -15,28 +15,39 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String? _userName;
-  User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
 
   List<String> menuChoices = ["Sign Out"];
 
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   late String _selectedChoice;
-  Future<void> _getUserName() async {
-    FirebaseFirestore.instance
-        .collection('Users')
-        .doc(await user!.uid)
+  Future<UserModel> _getUserName() async {
+    if (kDebugMode) {
+      print("Starting to get User....");
+    }
+    return await FirebaseFirestore.instance
+        .collection('users')
+        .doc(_auth.currentUser!.uid)
+        .withConverter<UserModel>(
+          fromFirestore: ((snapshots, _) =>
+              UserModel.fromMap(snapshots.data()!)),
+          toFirestore: (usermodel, _) => usermodel.toMap(),
+        )
         .get()
         .then((value) {
-      setState(() {
-        loggedInUser = UserModel.fromMap(value.data());
-      });
+      if (kDebugMode) {
+        print(
+            "User is : ${UserModel.fromMap(value.data()!.toMap()).firstName}");
+      }
+      return UserModel.fromMap(value.data()!.toMap());
     });
   }
 
   @override
   void initState() {
     super.initState();
-    _getUserName();
+    // _getUserName();
     /*FirebaseFirestore.instance
         .collection("users")
         .doc(user!.uid)
@@ -125,42 +136,50 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              // SizedBox(
-              //   height: 150,
-              //   child: Image.asset("assets/logo.png", fit: BoxFit.contain),
-              // ),
-              // const Text(
-              //   "Welcome, let's go",
-              //   style:
-              //       const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              // ),
-              const SizedBox(
-                height: 10,
-              ),
-              Text("${loggedInUser.firstName} ${loggedInUser.secondName}",
-                  style: const TextStyle(
-                    color: Colors.black54,
-                    fontWeight: FontWeight.w500,
-                  )),
-              Text("${loggedInUser.email}",
-                  style: const TextStyle(
-                    color: Colors.black54,
-                    fontWeight: FontWeight.w500,
-                  )),
-              const SizedBox(
-                height: 15,
-              ),
-              /*ActionChip(
-                  label: const Text("Proceed"),
-                  onPressed: () {
-                    logout(context);
-                  }),*/
-            ],
-          ),
+          child: FutureBuilder(
+              future: _getUserName(),
+              builder: (context, AsyncSnapshot<UserModel> userModel) {
+                return userModel.connectionState != ConnectionState.done
+                    ? const Center(
+                        child: CircularProgressIndicator.adaptive(),
+                      )
+                    : Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          // SizedBox(
+                          //   height: 150,
+                          //   child: Image.asset("assets/logo.png", fit: BoxFit.contain),
+                          // ),
+                          // const Text(
+                          //   "Welcome, let's go",
+                          //   style:
+                          //       const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                          // ),
+                          // const SizedBox(
+                          //   height: 10,
+                          // ),
+                          // Text("${userModel.data?.firstName} ${userModel.data?.secondName}",
+                          //     style: const TextStyle(
+                          //       color: Colors.black54,
+                          //       fontWeight: FontWeight.w500,
+                          //     )),
+                          // Text("${userModel.data?.email}",
+                          //     style: const TextStyle(
+                          //       color: Colors.black54,
+                          //       fontWeight: FontWeight.w500,
+                          //     )),
+                          // const SizedBox(
+                          //   height: 15,
+                          // ),
+                          /*ActionChip(
+                      label: const Text("Proceed"),
+                      onPressed: () {
+                        logout(context);
+                      }),*/
+                        ],
+                      );
+              }),
         ),
       ),
     );

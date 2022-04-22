@@ -5,24 +5,24 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-class FavouritesPage extends StatefulWidget {
-  const FavouritesPage({Key? key}) : super(key: key);
+class user_placeholder extends StatefulWidget {
+  const user_placeholder({Key? key}) : super(key: key);
 
   @override
-  _FavouritesPageState createState() => _FavouritesPageState();
+  _user_placeholderState createState() => _user_placeholderState();
 }
 
-class _FavouritesPageState extends State<FavouritesPage> {
+class _user_placeholderState extends State<user_placeholder> {
   final Completer<WebViewController> _controller =
       Completer<WebViewController>();
 
-@override
+  @override
   void initState() {
     super.initState();
     if (Platform.isAndroid) {
       WebView.platform = SurfaceAndroidWebView();
     }
-  }  
+  }
 
   @override
   Widget build(BuildContext context) => Scaffold(

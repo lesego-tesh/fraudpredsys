@@ -1,10 +1,18 @@
-import 'package:flutter/material.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
-import 'package:fraudpredsys/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fraudpredsys/widget/navigation_drawer_widget.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_html/rich_text_parser.dart';
+
+import 'package:fraudpredsys/model/user_model.dart';
+import 'package:fraudpredsys/page/view.dart';
+import 'package:fraudpredsys/page/Upload.dart';
+import 'package:fraudpredsys/page/home_page.dart';
+import 'package:fraudpredsys/page/settings.dart';
+import 'package:fraudpredsys/page/user.dart';
+
+import '../page/user_page.dart';
+import 'home_screen.dart';
 import 'login_screen.dart';
 
 class Dashboard extends StatefulWidget {
@@ -18,18 +26,32 @@ class _DashboardState extends State<Dashboard> {
   String? _userName;
   User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  int _currentIndex = 0;
+  final List<Widget> _children = [
+    home_page(),
+    Upload(),
+    view(),
+    settings(),
+  ];
 
   List<String> menuChoices = ["Sign Out"];
 
   late String _selectedChoice;
   Future<void> _getUserName() async {
-    FirebaseFirestore.instance
+    await FirebaseFirestore.instance
         .collection('Users')
-        .doc(await user!.uid)
+        .doc(_auth.currentUser!.uid)
+        .withConverter<UserModel>(
+          fromFirestore: ((snapshots, _) =>
+              UserModel.fromMap(snapshots.data()!)),
+          toFirestore: (usermodel, _) => usermodel.toMap(),
+        )
         .get()
         .then((value) {
       setState(() {
-        loggedInUser = UserModel.fromMap(value.data());
+        loggedInUser = UserModel.fromMap(value.data()!.toMap());
       });
     });
   }
@@ -92,6 +114,12 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 
+  void OnTappedBar(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -123,37 +151,48 @@ class _DashboardState extends State<Dashboard> {
           ),
         ],
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              const SizedBox(
-                height: 10,
-              ),
-              Text("${loggedInUser.firstName} ${loggedInUser.secondName}",
-                  style: const TextStyle(
-                    color: Colors.black54,
-                    fontWeight: FontWeight.w500,
-                  )),
-              Text("${loggedInUser.email}",
-                  style: const TextStyle(
-                    color: Colors.black54,
-                    fontWeight: FontWeight.w500,
-                  )),
-              const SizedBox(
-                height: 15,
-              ),
-              /*ActionChip(
-                  label: const Text("Proceed"),
-                  onPressed: () {
-                    logout(context);
-                  }),*/
-            ],
+
+      body: _children[_currentIndex],
+      //  Center(
+      //   child: Padding(
+      //     padding: const EdgeInsets.all(20),
+      //     child: Column(
+      //       mainAxisAlignment: MainAxisAlignment.center,
+      //       crossAxisAlignment: CrossAxisAlignment.center,
+      //       children: <Widget>[],
+      //     ),
+      //   ),
+      // ),
+
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: OnTappedBar,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+            backgroundColor: Colors.blue,
           ),
-        ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.upload),
+            label: 'Upload',
+            backgroundColor: Colors.blue,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.view_agenda),
+            label: 'View',
+            backgroundColor: Colors.blue,
+          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.analytics),
+          //   label: 'Analysis',
+          //   backgroundColor: Colors.blue,
+          // ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Settings',
+            backgroundColor: Colors.blue,
+          ),
+        ],
       ),
     );
   }
@@ -164,4 +203,43 @@ class _DashboardState extends State<Dashboard> {
     Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => const LoginScreen()));
   }
+
+  void selectedItem(BuildContext context, int index) {
+    Navigator.of(context).pop();
+
+    //   switch (index) {
+    //     case 0:
+    //       Navigator.of(context).push(MaterialPageRoute(
+    //         builder: (context) => const HomeScreen(),
+    //       ));
+    //       break;
+    //     case 1:
+    //       Navigator.of(context).push(MaterialPageRoute(
+    //         builder: (context) => PeoplePage(),
+    //       ));
+    //       break;
+    //     case 2:
+    //       Navigator.of(context).push(MaterialPageRoute(
+    //         builder: (context) => PeoplePage(),
+    //       ));
+    //       break;
+    //     case 3:
+    //       Navigator.of(context).push(MaterialPageRoute(
+    //         builder: (context) => PeoplePage(),
+    //       ));
+    //       break;
+    //     case 4:
+    //       Navigator.of(context).push(MaterialPageRoute(
+    //         builder: (context) => PeoplePage(),
+    //       ));
+    //       break;
+    //     case 5:
+    //       Navigator.of(context).push(MaterialPageRoute(
+    //         builder: (context) => PeoplePage(),
+    //       ));
+    //       break;
+    //   }
+  }
 }
+
+class OnTappedBar {}

@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:fraudpredsys/widget/button_widget.dart';
 import 'package:fraudpredsys/widget/navigation_drawer_widget.dart';
 
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([

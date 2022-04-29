@@ -2,14 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/rich_text_parser.dart';
 
 import 'package:fraudpredsys/model/user_model.dart';
 import 'package:fraudpredsys/page/view.dart';
 import 'package:fraudpredsys/page/Upload.dart';
 import 'package:fraudpredsys/page/home_page.dart';
 import 'package:fraudpredsys/page/settings.dart';
-import 'package:fraudpredsys/page/user.dart';
 
 import '../page/user_page.dart';
 import 'home_screen.dart';

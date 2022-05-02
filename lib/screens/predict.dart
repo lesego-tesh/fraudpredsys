@@ -1,47 +1,27 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-// class PredictionResults {
-//   final String filename;
-//   final String results;
-
-//   const PredictionResults({required this.filename, required this.results});
-
-//   factory PredictionResults.fromJson(Map<String, dynamic> json) {
-//     return PredictionResults(
-//       filename: json['filename'] as String,
-//       results: json['results'] as String,
-//     );
-//   }
-// }
-
-// List<PredictionResults> parseResults(String responseBody) {
-//   final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
-//   return parsed
-//       .map<PredictionResults>((json) => PredictionResults.fromJson(json))
-//       .toList();
-// }
-
 class Predict extends StatefulWidget {
+  const Predict({Key? key}) : super(key: key);
+
   @override
   _PredictState createState() => _PredictState();
 }
 
 class _PredictState extends State<Predict> with SingleTickerProviderStateMixin {
-  String _image =
+  final String _image =
       'https://ouch-cdn2.icons8.com/84zU-uvFboh65geJMR5XIHCaNkx-BZ2TahEpE9TpVJM/rs:fit:784:784/czM6Ly9pY29uczgu/b3VjaC1wcm9kLmFz/c2V0cy9wbmcvODU5/L2E1MDk1MmUyLTg1/ZTMtNGU3OC1hYzlh/LWU2NDVmMWRiMjY0/OS5wbmc.png';
   late AnimationController loadingController;
-
+  late String data;
   late File _file;
   PlatformFile? _platformFile;
-  
-  selectFile() async {
+  late List<String> results;
+
+  Future<PlatformFile> selectFile() async {
     final file = await FilePicker.platform
         .pickFiles(type: FileType.custom, allowedExtensions: ['csv']);
 
@@ -49,12 +29,15 @@ class _PredictState extends State<Predict> with SingleTickerProviderStateMixin {
       setState(() {
         _file = File(file.files.single.path!);
         _platformFile = file.files.first;
-        uploadFileFromDio(File(_platformFile!.path!))
-            .then((value) => print(value));
       });
+
+      //   uploadFileFromDio(File(_platformFile!.path!))
+      //       .then((value) => print(value));
+      // });
     }
 
     loadingController.forward();
+    return _platformFile!;
   }
 
   @override
@@ -94,101 +77,121 @@ class _PredictState extends State<Predict> with SingleTickerProviderStateMixin {
       print("response from formData: ${formdata.fields.toString()}");
       print("response from API: ${response.toString()}");
     }
-    
+
     var response2 = await dio.get("http://10.0.2.2:8000/fps/predictLatest/");
 
-    var data = response2.toString();
+    // ignore: await_only_futures
+    data = await response2.toString();
+
+    //results = parseResults(data).cast<String>();
 
     if (kDebugMode) {
       print("value Predict: ${response2.toString()}");
     }
+
     return data;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Predict"),
-      ),
-      body: SingleChildScrollView(
-          child: Column(
-        children: <Widget>[
-          const SizedBox(
-            height: 100,
-          ),
-          Image.network(
-            _image,
-            width: 300,
-          ),
-          const SizedBox(
-            height: 50,
-          ),
-          Text(
-            'Upload your file',
-            style: TextStyle(
-                fontSize: 25,
-                color: Colors.grey.shade800,
-                fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Text(
-            'File should be csv',
-            style: TextStyle(fontSize: 15, color: Colors.grey.shade500),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          GestureDetector(
-            onTap: selectFile,
-            child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 40.0, vertical: 20.0),
-                child: DottedBorder(
-                  borderType: BorderType.RRect,
-                  radius: const Radius.circular(10),
-                  dashPattern: [10, 4],
-                  strokeCap: StrokeCap.round,
-                  color: Colors.blue.shade400,
-                  child: Container(
-                    width: double.infinity,
-                    height: 150,
-                    decoration: BoxDecoration(
-                        color: Colors.blue.shade50.withOpacity(.3),
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(
-                          Icons.file_open,
-                          color: Colors.blue,
-                          size: 40,
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          'Select your file',
-                          style: TextStyle(
-                              fontSize: 15, color: Colors.grey.shade400),
-                        ),
-                      ],
+        appBar: AppBar(
+          title: const Text("Predict"),
+        ),
+        body: SingleChildScrollView(
+          child: Column(children: <Widget>[
+            const SizedBox(
+              height: 100,
+            ),
+            Image.network(
+              _image,
+              width: 300,
+            ),
+            const SizedBox(
+              height: 50,
+            ),
+            Text(
+              'Upload your file',
+              style: TextStyle(
+                  fontSize: 25,
+                  color: Colors.grey.shade800,
+                  fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Text(
+              'File should be csv',
+              style: TextStyle(fontSize: 15, color: Colors.grey.shade500),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            GestureDetector(
+              onTap: selectFile,
+              child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 40.0, vertical: 20.0),
+                  child: DottedBorder(
+                    borderType: BorderType.RRect,
+                    radius: const Radius.circular(10),
+                    dashPattern: [10, 4],
+                    strokeCap: StrokeCap.round,
+                    color: Colors.blue.shade400,
+                    child: Container(
+                      width: double.infinity,
+                      height: 150,
+                      decoration: BoxDecoration(
+                          color: Colors.blue.shade50.withOpacity(.3),
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.file_open,
+                            color: Colors.blue,
+                            size: 40,
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          Text(
+                            'Select your file',
+                            style: TextStyle(
+                                fontSize: 15, color: Colors.grey.shade400),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                )),
-          ),
-          if (_platformFile != null) Text("File name: ${_platformFile!.name}"),
-          if (_platformFile != null) Text("File size: ${_platformFile!.size}"),
-          if (_platformFile != null)
-            TextButton(
-              onPressed: () => Navigator.pop(context, ),
-              child: const Text('Predict'),
-            )
-        ],
-      )),
-    );
+                  )),
+            ),
+            if (_platformFile != null)
+              Text("File name: ${_platformFile!.name}"),
+            if (_platformFile != null)
+              Text("File size: ${_platformFile!.size}"),
+            if (_platformFile != null)
+              TextButton(
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                            title: const Text('Result'),
+                            content: Text(
+                                // ignore: avoid_print
+                                'Result is ${uploadFileFromDio(File(_platformFile!.path!))}'),
+                            actions: [
+                              ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text('Go Back'))
+                            ],
+                          ));
+                },
+                child: const Text('Predict'),
+              ),
+          ]),
+        ));
   }
 //                 ? Container(
 //                     padding: const EdgeInsets.all(20),

@@ -7,7 +7,6 @@ import 'package:flutter/services.dart';
 import 'package:fraudpredsys/widget/button_widget.dart';
 import 'package:fraudpredsys/widget/navigation_drawer_widget.dart';
 
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([
@@ -32,8 +31,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       debugShowCheckedModeBanner: false,
-      home: LoginScreen(),
-      
+      home: const LoginScreen(),
     );
   }
 }
@@ -46,6 +44,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) => Scaffold(
+        backgroundColor: const Color.fromARGB(239, 219, 215, 215),
         // endDrawer: NavigationDrawerWidget(),
         appBar: AppBar(
           title: Text(MyApp.title),

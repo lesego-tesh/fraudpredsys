@@ -12,6 +12,7 @@ class _resultsScreenState extends State<resultsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(239, 219, 215, 215),
         appBar: AppBar(title: const Text("Prediction")),
         body: ListView.builder(
           itemBuilder: (BuildContext context, int index) {

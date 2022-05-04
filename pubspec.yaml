@@ -33,7 +33,7 @@ dependencies:
   firebase_core: ^1.12.0
   bloc : ^6.0.1
   timeago: ^2.0.26
-  carousel_slider: ^2.2.1
+  
   url_launcher: ^6.0.18
   dio: ^4.0.6
   file_picker: ^4.5.1
@@ -47,6 +47,7 @@ dependencies:
   flutter:
     sdk: flutter
   google_fonts: ^2.3.2
+  carousel_slider: ^4.1.1
 
 
 dev_dependencies:

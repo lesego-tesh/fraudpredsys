@@ -7,11 +7,12 @@ import 'package:fraudpredsys/page/user_page.dart';
 import 'package:fraudpredsys/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fraudpredsys/screens/home_screen.dart';
-import 'package:fraudpredsys/screens/predict.dart';
+import 'package:fraudpredsys/userPages/predict.dart';
+import 'package:fraudpredsys/userPages/uploadFile.dart';
 
 class NavigationDrawerWidget extends StatelessWidget {
   User? user = FirebaseAuth.instance.currentUser;
-  UserModel loggedInUser = UserModel();
+  UserModel? loggedInUser;
 
   final _auth = FirebaseAuth.instance;
 
@@ -224,17 +225,17 @@ class NavigationDrawerWidget extends StatelessWidget {
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => Predict(),
         ));
-      //   break;
-      // case 3:
-      //   Navigator.of(context).push(MaterialPageRoute(
-      //     builder: (context) => PredictionStateful(),
-      //   ));
-      //   break;
-      // case 4:
-      //   Navigator.of(context).push(MaterialPageRoute(
-      //     builder: (context) => PredictionStateful(),
-      //   ));
-      //   break;
+        break;
+      case 3:
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => Predict(),
+        ));
+        break;
+      case 4:
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => Uploadfile(),
+        ));
+        break;
       // case 5:
       //   Navigator.of(context).push(MaterialPageRoute(
       //     builder: (context) => PredictionStateful(),

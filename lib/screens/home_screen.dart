@@ -5,11 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fraudpredsys/widget/navigation_drawer_widget.dart';
 import 'login_screen.dart';
-// import 'package:fraudpredsys/model/card_model.dart';
-// import 'package:fraudpredsys/model/operation_model.dart';
-// import 'package:fraudpredsys/model/transaction_model.dart';
-// import 'package:flutter/cupertino.dart';
-// import 'package:google_fonts/google_fonts.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -19,8 +15,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
-   int current = 0;
+  int current = 0;
   List<T> map<T>(List list, Function handler) {
     List<T> result = [];
     for (var i = 0; i < list.length; i++) {
@@ -30,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   String? _userName;
-  UserModel loggedInUser = UserModel();
+  UserModel? loggedInUser;
 
   List<String> menuChoices = ["Sign Out"];
 
@@ -62,7 +57,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-   
   }
 
   void _select(String choice) {
@@ -112,6 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(239, 219, 215, 215),
       drawer: NavigationDrawerWidget(),
       appBar: AppBar(
         title: const Text("Welcome"),
@@ -140,164 +135,111 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: FutureBuilder(
-              future: _getUserName(),
-              builder: (context, AsyncSnapshot<UserModel> userModel) {
-                return userModel.connectionState != ConnectionState.done
-                    ? const Center(
-                        child: CircularProgressIndicator.adaptive(),
-                      )
-                    : Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                       //============================
-              //          // Card Section
-              // SizedBox(
-              //   height: 25,
-              // ),
+      // body: Center(
+      //   child: Padding(
+      //     padding: const EdgeInsets.all(20),
+      //     child: FutureBuilder(
+      //         future: _getUserName(),
+      //         builder: (context, AsyncSnapshot<UserModel> userModel) {
+      //           return userModel.connectionState != ConnectionState.done
+      //               ? const Center(
+      //                   child: CircularProgressIndicator.adaptive(),
+      //                 )
+      //               : Column(
+      //                   mainAxisAlignment: MainAxisAlignment.center,
+      //                   crossAxisAlignment: CrossAxisAlignment.center,
+      //                   children: <Widget>[
 
-              // Padding(
-              //   padding: EdgeInsets.only(left: 16, bottom: 16),
-              //   child: Column(
-              //     crossAxisAlignment: CrossAxisAlignment.start,
-              //     children: <Widget>[
-              //       Text(
-              //         'Good Morning',
-              //         style: GoogleFonts.inter(
-              //             fontSize: 18,
-              //             fontWeight: FontWeight.w500,
-              //             color: kBlackColor),
-              //       ),
-              //       Text(
-              //         'Amanda Alex',
-              //         style: GoogleFonts.inter(
-              //             fontSize: 30,
-              //             fontWeight: FontWeight.w700,
-              //             color: kBlackColor),
-              //       )
-              //     ],
-              //   ),
-              // ),
+      //                ],
+      //                 );
+      //         }),
+      //   ),
 
-              // Container(
-              //   height: 199,
-              //   child: ListView.builder(
-              //     scrollDirection: Axis.horizontal,
-              //     padding: EdgeInsets.only(left: 16, right: 6),
-              //     itemCount: cards.length,
-              //     itemBuilder: (context, index) {
-              //       return Container(
-              //         margin: EdgeInsets.only(right: 10),
-              //         height: 199,
-              //         width: 344,
-              //         decoration: BoxDecoration(
-              //           borderRadius: BorderRadius.circular(28),
-              //           color: Color(cards[index].cardBackground),
-              //         ),
-              //         child: Stack(
-              //           children: <Widget>[
-              //             Positioned(
-              //               child: SvgPicture.asset(cards[index].cardElementTop),
-              //             ),
-              //             Positioned(
-              //               bottom: 0,
-              //               right: 0,
-              //               child:
-              //                   SvgPicture.asset(cards[index].cardElementBottom),
-              //             ),
-              //             Positioned(
-              //               left: 29,
-              //               top: 48,
-              //               child: Text(
-              //                 'CARD NUMBER',
-              //                 style: GoogleFonts.inter(
-              //                     fontSize: 14,
-              //                     fontWeight: FontWeight.w400,
-              //                     color: kWhiteColor),
-              //               ),
-              //             ),
-              //             Positioned(
-              //               left: 29,
-              //               top: 65,
-              //               child: Text(
-              //                 cards[index].cardNumber,
-              //                 style: GoogleFonts.inter(
-              //                     fontSize: 20,
-              //                     fontWeight: FontWeight.w700,
-              //                     color: kWhiteColor),
-              //               ),
-              //             ),
-              //             Positioned(
-              //               right: 21,
-              //               top: 35,
-              //               child: Image.asset(
-              //                 cards[index].cardType,
-              //                 width: 27,
-              //                 height: 27,
-              //               ),
-              //             ),
-              //             Positioned(
-              //               left: 29,
-              //               bottom: 45,
-              //               child: Text(
-              //                 'CARD HOLDERNAME',
-              //                 style: GoogleFonts.inter(
-              //                     fontSize: 14,
-              //                     fontWeight: FontWeight.w400,
-              //                     color: kWhiteColor),
-              //               ),
-              //             ),
-              //             Positioned(
-              //               left: 29,
-              //               bottom: 21,
-              //               child: Text(
-              //                 cards[index].user,
-              //                 style: GoogleFonts.inter(
-              //                     fontSize: 20,
-              //                     fontWeight: FontWeight.w700,
-              //                     color: kWhiteColor),
-              //               ),
-              //             ),
-              //             Positioned(
-              //               left: 202,
-              //               bottom: 45,
-              //               child: Text(
-              //                 'EXPIRY DATE',
-              //                 style: GoogleFonts.inter(
-              //                     fontSize: 14,
-              //                     fontWeight: FontWeight.w400,
-              //                     color: kWhiteColor),
-              //               ),
-              //             ),
-              //             Positioned(
-              //               left: 202,
-              //               bottom: 21,
-              //               child: Text(
-              //                 cards[index].cardExpired,
-              //                 style: GoogleFonts.inter(
-              //                     fontSize: 20,
-              //                     fontWeight: FontWeight.w700,
-              //                     color: kWhiteColor),
-              //               ),
-              //             )
-              //           ],
-              //         ),
-              //       );
-              //     },
-              //   ),
+      // ),
 
+      body: ListView(
+        children: [
+          CarouselSlider(
+            items: [
+              //1st Image of Slider
+              Container(
+                margin: EdgeInsets.all(6.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8.0),
+                  image: DecorationImage(
+                    image: NetworkImage(
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaGLGy-YSDIDNhbimW7f7D3b4XH1wsKqbfo42T6IlRcptJ53H0St2-q4V8cCGVxjslSIQ&usqp=CAU'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
 
-              //          //===========================
-                     ],
-                      );
-              }),
-        ),
+              //2nd Image of Slider
+              Container(
+                margin: EdgeInsets.all(6.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8.0),
+                  image: DecorationImage(
+                    image: NetworkImage(
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRd_mjaG2cxqI_P55EJMtxMICh3-__Q_jLNVNnxvtFBtqyi4DZanMGIU3KQV8AkZ0BPJg&usqp=CAU'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
 
+              //3rd Image of Slider
+              Container(
+                margin: EdgeInsets.all(6.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8.0),
+                  image: DecorationImage(
+                    image: NetworkImage(
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ750GJXElPUyldC4802NNTjOKxxERb1fAm8-pFOF25cppoPLV3JoX3ABlg-3_vXqeLvRc&usqp=CAU'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
 
+              //4th Image of Slider
+              Container(
+                margin: EdgeInsets.all(6.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8.0),
+                  image: DecorationImage(
+                    image: NetworkImage(
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQM-6-6_vXuk7_S4zTT6xHK_Lg5PIpkp_NZ0hwj6pMS-zahAOHBkwCSIo1fKgF1h7iokq8&usqp=CAU'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+
+              //5th Image of Slider
+              Container(
+                margin: EdgeInsets.all(6.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8.0),
+                  image: DecorationImage(
+                    image: NetworkImage(
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSy6nPywwywG8Q0hyfNa16pj1fBSRIrai7QCtyKIAXInfldARPHfMru6IgNQT68rL3QKIk&usqp=CAU'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ],
+
+            //Slider Container properties
+            options: CarouselOptions(
+              height: 180.0,
+              enlargeCenterPage: true,
+              autoPlay: true,
+              aspectRatio: 16 / 9,
+              autoPlayCurve: Curves.fastOutSlowIn,
+              enableInfiniteScroll: true,
+              autoPlayAnimationDuration: Duration(milliseconds: 800),
+              viewportFraction: 0.8,
+            ),
+          ),
+        ],
       ),
     );
   }

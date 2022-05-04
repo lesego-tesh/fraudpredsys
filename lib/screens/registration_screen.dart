@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fraudpredsys/screens/login_screen.dart';
 
-
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({Key? key}) : super(key: key);
 
@@ -17,10 +16,9 @@ class RegistrationScreen extends StatefulWidget {
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
   final _auth = FirebaseAuth.instance;
-  
+
   // string for displaying the error Message
   String? errorMessage;
-
 
   // our form key
   final _formKey = GlobalKey<FormState>();
@@ -202,7 +200,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         child: SingleChildScrollView(
           child: Container(
             color: Colors.white,
-            child: Padding( 
+            child: Padding(
               padding: const EdgeInsets.all(36.0),
               child: Form(
                 key: _formKey,
@@ -238,11 +236,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       ),
     );
   }
+
   void signUp(String email, String password) async {
     if (kDebugMode) {
       print('Auth Starting');
     }
-
 
     if (_formKey.currentState!.validate()) {
       try {
@@ -251,11 +249,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             .then((value) => {postDetailsToFirestore()})
             .catchError((e) {
           Fluttertoast.showToast(msg: e!.message);
-          
         });
       } on FirebaseAuthException catch (error) {
         switch (error.code) {
-          case "invalid-email": 
+          case "invalid-email":
             errorMessage = "Your email address appears to be malformed.";
             break;
           case "wrong-password":
@@ -281,6 +278,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       }
     }
   }
+
   postDetailsToFirestore() async {
     if (kDebugMode) {
       print('Posting to Firebase');
@@ -292,14 +290,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     User? user = _auth.currentUser;
 
-    UserModel userModel = UserModel();
-
     // writing all the values
-    userModel.email = user!.email;
-    userModel.uid = user.uid;
-    userModel.firstName = firstNameEditingController.text;
-    userModel.secondName = secondNameEditingController.text;
-
+    UserModel userModel = UserModel(
+        email: user!.email!,
+        uid: user.uid,
+        firstName: firstNameEditingController.text,
+        secondName: secondNameEditingController.text,
+        role: "user");
     await firebaseFirestore
         .collection("users")
         .doc(user.uid)

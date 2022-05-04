@@ -23,7 +23,7 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   String? _userName;
   User? user = FirebaseAuth.instance.currentUser;
-  UserModel loggedInUser = UserModel();
+  UserModel? loggedInUser;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   int _currentIndex = 0;
@@ -49,7 +49,7 @@ class _DashboardState extends State<Dashboard> {
         .get()
         .then((value) {
       setState(() {
-        loggedInUser = UserModel.fromMap(value.data()!.toMap());
+        loggedInUser = value.data()!;
       });
     });
   }
@@ -121,6 +121,7 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(239, 219, 215, 215),
       //drawer: NavigationDrawerWidget(),
       appBar: AppBar(
         title: const Text("Administration"),

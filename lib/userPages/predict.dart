@@ -21,7 +21,7 @@ class _PredictState extends State<Predict> with SingleTickerProviderStateMixin {
   PlatformFile? _platformFile;
   late List<String> results;
 
-  Future<PlatformFile> selectFile() async {
+  selectFile() async {
     final file = await FilePicker.platform
         .pickFiles(type: FileType.custom, allowedExtensions: ['csv']);
 
@@ -31,9 +31,8 @@ class _PredictState extends State<Predict> with SingleTickerProviderStateMixin {
         _platformFile = file.files.first;
       });
 
-      //   uploadFileFromDio(File(_platformFile!.path!))
-      //       .then((value) => print(value));
-      // });
+      uploadFileFromDio(File(_platformFile!.path!))
+          .then((value) => print(value));
     }
 
     loadingController.forward();
@@ -53,7 +52,7 @@ class _PredictState extends State<Predict> with SingleTickerProviderStateMixin {
   }
 
   //Upload from Dio
-  Future<String> uploadFileFromDio(File file) async {
+  uploadFileFromDio(File file) async {
     var dio = Dio();
     String fileName = file.path.split("/").last;
     dio.options.connectTimeout = 5000;
@@ -86,15 +85,14 @@ class _PredictState extends State<Predict> with SingleTickerProviderStateMixin {
     //results = parseResults(data).cast<String>();
 
     if (kDebugMode) {
-      print("value Predict: ${response2.toString()}");
+      print("value Predict: $data");
     }
-
-    return data;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(239, 219, 215, 215),
         appBar: AppBar(
           title: const Text("Predict"),
         ),

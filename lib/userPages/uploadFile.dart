@@ -6,14 +6,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-class Upload extends StatefulWidget {
-  const Upload({Key? key}) : super(key: key);
+class Uploadfile extends StatefulWidget {
+  const Uploadfile({Key? key}) : super(key: key);
 
   @override
-  _UploadState createState() => _UploadState();
+  _UploadfileState createState() => _UploadfileState();
 }
 
-class _UploadState extends State<Upload>
+class _UploadfileState extends State<Uploadfile>
     with SingleTickerProviderStateMixin {
   final String _image =
       'https://ouch-cdn2.icons8.com/84zU-uvFboh65geJMR5XIHCaNkx-BZ2TahEpE9TpVJM/rs:fit:784:784/czM6Ly9pY29uczgu/b3VjaC1wcm9kLmFz/c2V0cy9wbmcvODU5/L2E1MDk1MmUyLTg1/ZTMtNGU3OC1hYzlh/LWU2NDVmMWRiMjY0/OS5wbmc.png';
@@ -33,7 +33,7 @@ class _UploadState extends State<Upload>
         _platformFile = file.files.first;
       });
 
-      UploadFromDio(File(_platformFile!.path!))
+      uploadFileFromDio(File(_platformFile!.path!))
           .then((value) => print(value));
     }
 
@@ -53,7 +53,7 @@ class _UploadState extends State<Upload>
   }
 
   //Upload from Dio
-  UploadFromDio(File file) async {
+  uploadFileFromDio(File file) async {
     var dio = Dio();
     String fileName = file.path.split("/").last;
     dio.options.connectTimeout = 5000;
@@ -93,6 +93,7 @@ class _UploadState extends State<Upload>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(239, 219, 215, 215),
         appBar: AppBar(
           title: const Text("Upload File"),
         ),

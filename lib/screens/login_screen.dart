@@ -182,30 +182,30 @@ class _LoginScreenState extends State<LoginScreen> {
 
                         //################################
                         ),
-                    const SizedBox(height: 15),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          const Text("Login as Admin "),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Adminlogin()));
-                            },
-                            child: const Text(
-                              "Signin",
-                              style: TextStyle(
-                                  color: Colors.blue,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15),
-                            ),
-                          )
-                        ]
+                    // const SizedBox(height: 15),
+                    // Row(
+                    //     mainAxisAlignment: MainAxisAlignment.center,
+                    //     children: <Widget>[
+                    //       const Text("Login as Admin "),
+                    //       GestureDetector(
+                    //         onTap: () {
+                    //           Navigator.push(
+                    //               context,
+                    //               MaterialPageRoute(
+                    //                   builder: (context) => Adminlogin()));
+                    //         },
+                    //         child: const Text(
+                    //           "Signin",
+                    //           style: TextStyle(
+                    //               color: Colors.blue,
+                    //               fontWeight: FontWeight.bold,
+                    //               fontSize: 15),
+                    //         ),
+                    //       )
+                    //     ]
 
-                        //################################
-                        ),
+                    //     //################################
+                    //     ),
                   ],
                 ),
               ),
